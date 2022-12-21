@@ -1,65 +1,104 @@
+const rockButton = document.querySelector('.rock');
+const paperButton = document.querySelector('.paper');
+const scissorsButton = document.querySelector('.scissors');
+const outcomeDiv = document.querySelector('.outcome');
+let playerScore = 0;
+let computerScore = 0;
+
 /* Function returns 'Rock', 'Paper', or 'Scissors' */
 function getComputerChoice() {
     let computerChoice = Math.floor(Math.random() * 3);
 
     if (computerChoice === 0) {
-        computerChoice = "Rock";
+        computerChoice = "rock";
     } else if (computerChoice === 1) {
-        computerChoice = "Paper";
+        computerChoice = "paper";
     } else {
-        computerChoice = "Scissors";
+        computerChoice = "scissors";
     }
 
     return computerChoice;
 }
 
-/* Function takes playerSelection and computerSelection and returns string declaring winner of round. */
-function playRound(playerSelection, computerSelection) {
-    let resultAnnouncement;
-    
-    if (playerSelection.toUpperCase() === "ROCK" && computerSelection.toUpperCase() === "PAPER") {
-        resultAnnouncement = "Computer wins! Paper beats rock!";
-    } else if (playerSelection.toUpperCase() === "ROCK" && computerSelection.toUpperCase() === "SCISSORS") {
-        resultAnnouncement = "You win! Rock beats scissors!";
-    } else if (playerSelection.toUpperCase() === "PAPER" && computerSelection.toUpperCase() === "SCISSORS") {
-        resultAnnouncement = "Computer wins! Scissors beats paper!";
-    } else if (playerSelection.toUpperCase() === "PAPER" && computerSelection.toUpperCase() === "ROCK") {
-        resultAnnouncement = "You win! Paper beats rock!";
-    } else if (playerSelection.toUpperCase() === "SCISSORS" && computerSelection.toUpperCase() === "PAPER") {
-        resultAnnouncement = "You win! Scissors beats paper!";
-    } else if (playerSelection.toUpperCase() === "SCISSORS" && computerSelection.toUpperCase() === "ROCK") {
-        resultAnnouncement = "Computer wins! Rock beats scissors!";
+/* Function takes playerSelection and computerSelection, displays string declaring winner of round, and increments playerScore or computerScore. */
+function playRound(playerSelection, computerSelection) { 
+    if (playerSelection === "rock" && computerSelection === "paper") {
+        const p = document.createElement('p')
+        p.innerText = "Computer wins! Paper beats rock!";
+        outcomeDiv.appendChild(p);
+        computerScore++;
+        return (playerScore, computerScore);
+    } else if (playerSelection === "rock" && computerSelection === "scissors") {
+        const p = document.createElement('p')
+        p.innerText = "You win! Rock beats scissors!";
+        outcomeDiv.appendChild(p);
+        playerScore++;
+        return (playerScore, computerScore);
+    } else if (playerSelection === "paper" && computerSelection === "scissors") {
+        const p = document.createElement('p')
+        p.innerText = "Computer wins! Scissors beats paper!";
+        outcomeDiv.appendChild(p);
+        computerScore++;
+        return (playerScore, computerScore);
+    } else if (playerSelection === "paper" && computerSelection === "rock") {
+        const p = document.createElement('p')
+        p.innerText = "You win! Paper beats rock!";
+        outcomeDiv.appendChild(p);
+        playerScore++;
+        return (playerScore, computerScore);
+    } else if (playerSelection === "scissors" && computerSelection === "paper") {
+        const p = document.createElement('p')
+        p.innerText = "You win! Scissors beats paper!";
+        outcomeDiv.appendChild(p);
+        playerScore++;
+        return (playerScore, computerScore);
+    } else if (playerSelection === "scissors" && computerSelection === "rock") {
+        const p = document.createElement('p')
+        p.innerText = "Computer wins! Rock beats scissors!";
+        outcomeDiv.appendChild(p);
+        computerScore++;
+        return (playerScore, computerScore);
     } else {
-        resultAnnouncement = "Tie!";
+        const p = document.createElement('p')
+        p.innerText = "Tie!";
+        outcomeDiv.appendChild(p);
+        return (playerScore, computerScore);
     }
-    
-    return resultAnnouncement;
 }
 
-/* Function calls playRound five times and keeps score and reports a winner and lose at the end. */
-function game() {
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("Round " + (i + 1) + ":  Rock, paper, scissors, GO!");
-        let computerSelection = getComputerChoice();
+const checkForWinner = (playerScore, computerScore) => {
+    if (playerScore === 5) {
+        const h2 = document.createElement('h2');
+        h2.innerText = `You won ${playerScore} to ${computerScore}! Great job!`;
+        outcomeDiv.appendChild(h2);
 
-        console.log(playRound(playerSelection, computerSelection));
-
-        if (playRound(playerSelection, computerSelection) === "Computer wins! Paper beats rock!" || playRound(playerSelection, computerSelection) === "Computer wins! Scissors beats paper!" || playRound(playerSelection, computerSelection) === "Computer wins! Rock beats scissors!") {
-            computerWins++;
-        } else if (playRound(playerSelection, computerSelection) === "You win! Rock beats scissors!" || playRound(playerSelection, computerSelection) === "You win! Paper beats rock!" || playRound(playerSelection, computerSelection) === "You win! Scissors beats paper!") {
-            playerWins++;
-        } 
-    }
-
-    if (computerWins > playerWins) {
-        console.log("The winner is the computer!");
-    } else if (playerWins > computerWins) {
-        console.log("You win!");
-    } else {
-        console.log("It's a tie!");
+    } else if (computerScore === 5) {    
+        const h2 = document.createElement('h2');
+        h2.innerText = `You lost ${playerScore} to ${computerScore}! Too bad!`;
+        outcomeDiv.appendChild(h2);
     }
 }
 
-let computerWins = 0;
-let playerWins = 0;
-game();
+rockButton.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = 'rock';
+    playRound(playerSelection, computerSelection);
+    checkForWinner(playerScore, computerScore);
+    console.log(playerScore, computerScore);
+})
+
+paperButton.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = 'paper';
+    playRound(playerSelection, computerSelection);
+    checkForWinner(playerScore, computerScore);
+    console.log(playerScore, computerScore);
+})
+
+scissorsButton.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = 'scissors';
+    playRound(playerSelection, computerSelection);
+    checkForWinner(playerScore, computerScore);
+    console.log(playerScore, computerScore);
+})
